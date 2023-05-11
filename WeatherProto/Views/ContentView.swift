@@ -43,9 +43,11 @@ struct ContentView: View {
                             .font(.largeTitle)
                         VStack {
                             Text(attributedString)
-                            //Text("H:24°   L:18°")
-                            //    .font(.title3.weight(.semibold))
-                             //   .opacity(1 - bottomSheetTranslationProrated)
+                            if hasDragged == false {
+                                let condition = weatherData.currentWeather?.condition.description ?? ""
+                                Text("\(condition)")
+                                    .font(.title3.weight(.semibold))
+                            }
                         }
                         
                         Spacer()
@@ -56,8 +58,10 @@ struct ContentView: View {
                     
                     BottomSheetView(position: $bottomSheetPosition) {
                     } content: {
-                        ForcastView(bottomSheetTranslationProrated: bottomSheetTranslationProrated)
-            
+                        ForcastView(bottomSheetTranslationProrated: bottomSheetTranslationProrated,
+                                    hourlyForecast: weatherData.hourWeather ?? [],
+                                    dailyForecast: weatherData.dayWeather ?? []
+                        )
                     }
                     .onBottomSheetDrag { translation in
                         bottomSheetTranslation = translation / screenHeight
@@ -97,24 +101,24 @@ struct ContentView: View {
         }
         let temperature = "\(Int(current.temperature.value))°"
         let condition = current.condition.description
+        let weatherInfo = temperature + (hasDragged ? " | "   + condition : "")
         
-        var string = AttributedString(temperature + (hasDragged ? " | " : "\n ") + condition)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        
+        var string = AttributedString(weatherInfo, attributes: .init([.paragraphStyle: paragraphStyle]))
         
         if let temp = string.range(of: temperature) {
             string[temp].font = .system(size: (96 - (bottomSheetTranslationProrated * (96 - 20))), weight: hasDragged ? .semibold : .thin)
-           // string[temp].foregroundColor = hasDragged ? .secondary : .primary
         }
         
         if let pipe = string.range(of: " | ") {
             string[pipe].font = .title3.weight(.semibold)
-           /// string[pipe].foregroundColor = .secondary.opacity(bottomSheetTranslationProrated)
         }
         
         if let weather = string.range(of: condition) {
             string[weather].font = .title3.weight(.semibold)
-            //string[weather].foregroundColor = .secondary
         }
-        
         return string
     }
 }

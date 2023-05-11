@@ -12,8 +12,8 @@ import CoreLocation
 class WeatherData: ObservableObject {
     let service = WeatherService.shared
     @Published var currentWeather: CurrentWeather?
-    @Published var dayWeather: Forecast<DayWeather>?
-    @Published var hourWeather: Forecast<HourWeather>?
+    @Published var dayWeather: [ForecastData]?
+    @Published var hourWeather: [ForecastData]?
     
     @discardableResult
     func weather(location: CLLocation) async -> CurrentWeather? {
@@ -26,22 +26,23 @@ class WeatherData: ObservableObject {
     }
     
     @discardableResult
-    func dailyForecast(location: CLLocation) async -> Forecast<DayWeather>? {
+    func dailyForecast(location: CLLocation) async -> [DayWeather]? {
         let dayWeather = await Task.detached(priority: .userInitiated) {
             let forcast = try? await self.service.weather(for: location, including: .daily)
-            return forcast
+            return forcast?.forecast
         }.value
-        self.dayWeather = dayWeather
+        self.dayWeather = dayWeather!.map{ForecastData(dayWeather: $0)}
         return dayWeather
     }
     
     @discardableResult
-    func hourlyForecast(location: CLLocation) async -> Forecast<HourWeather>? {
+    func hourlyForecast(location: CLLocation) async -> [HourWeather]? {
         let hourWeather = await Task.detached(priority: .userInitiated) {
             let forcast = try? await self.service.weather( for: location, including: .hourly)
-            return forcast
+            return forcast?.forecast
         }.value
-        self.hourWeather = hourWeather
+        
+        self.hourWeather = hourWeather!.map{ForecastData(hourWeather: $0)}
         return hourWeather
     }
 }

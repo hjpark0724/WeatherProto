@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
-
+import WeatherKit
+import CoreLocation
 struct ForcastView: View {
     var bottomSheetTranslationProrated: CGFloat = 1
+    //@EnvironmentObject var weatherData: WeatherData
+    var hourlyForecast: [ForecastData] = []
+    var dailyForecast: [ForecastData] = []
     @State private var selection = 0
     var body: some View {
         ScrollView{
@@ -16,13 +20,15 @@ struct ForcastView: View {
                 SegmentControl(selection: $selection)
                 ScrollView(.horizontal, showsIndicators: false ) {
                     HStack (spacing: 12) {
+                        //시간별 데이터
                         if selection == 0 {
-                            ForEach(ForecastSpecific.hourly) { forcast in
+                            ForEach(hourlyForecast) { forcast in
                                 ForecastCard(forecast: forcast, forecastPeriod: .hourly)
                             }
                             .transition(.offset(x: -430))
                         } else {
-                            ForEach(ForecastSpecific.daily) { forcast in
+                            //일별 데이터
+                            ForEach(dailyForecast) { forcast in
                                 ForecastCard(forecast: forcast, forecastPeriod: .daily)
                             }
                             .transition(.offset(x: 430))
