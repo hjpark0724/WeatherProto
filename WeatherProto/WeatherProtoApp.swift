@@ -12,6 +12,7 @@ struct WeatherProtoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(WeatherData())
         }
     }
 }

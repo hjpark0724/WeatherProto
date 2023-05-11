@@ -25,12 +25,12 @@ struct SegmentControl: View {
                         selection = 1
                     }
                 } label: {
-                    Text("Weekly Forecast")
+                    Text("Daily Forecast")
                 }
                 .frame(minWidth: 0, maxWidth: .infinity)
             }
             .font(.subheadline.weight(.semibold))
-            .foregroundColor(.secondary)
+            .foregroundColor(.white)
             Divider()
                 .background(.white.opacity(0.5))
                 .blendMode(.overlay)

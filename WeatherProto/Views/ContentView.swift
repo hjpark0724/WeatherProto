@@ -8,6 +8,7 @@
 import SwiftUI
 import BottomSheet
 import CoreLocation
+import WeatherKit
 enum BottomSheetPosition: CGFloat, CaseIterable {
     case top = 0.83
     case middle = 0.385
@@ -16,6 +17,8 @@ struct ContentView: View {
     @State private var bottomSheetPosition: BottomSheetPosition = .middle
     @State private var bottomSheetTranslation: CGFloat = BottomSheetPosition.middle.rawValue
     @State private var hasDragged = false
+    @State private var currentLocation: String = ""
+    @EnvironmentObject private var weatherData: WeatherData
     var bottomSheetTranslationProrated: CGFloat {
         (bottomSheetTranslation - BottomSheetPosition.middle.rawValue) / (BottomSheetPosition.top.rawValue - BottomSheetPosition.middle.rawValue)
     }
@@ -36,14 +39,13 @@ struct ContentView: View {
                         .offset(y: -bottomSheetTranslationProrated * imageOffset)
                     
                     VStack {
-                        Text("Seoul")
+                        Text(currentLocation)
                             .font(.largeTitle)
                         VStack {
-                            //Text("screenHeight:\(screenHeight)")
                             Text(attributedString)
-                            Text("H:24°   L:18°")
-                                .font(.title3.weight(.semibold))
-                                .opacity(1 - bottomSheetTranslationProrated)
+                            //Text("H:24°   L:18°")
+                            //    .font(.title3.weight(.semibold))
+                             //   .opacity(1 - bottomSheetTranslationProrated)
                         }
                         
                         Spacer()
@@ -75,19 +77,30 @@ struct ContentView: View {
             }
         }
         .task {
-            //41.40338, 2.17403
-            let location = CLLocation(latitude: 41.40338, longitude: 2.17403)
-            let weather = await WeatherData().weather(location: location)
-            guard let weather = weather else { return }
-            print(weather.apparentTemperature)
+            //테스트용 서울 좌표 (용산구) 41.40338, 2.17403
+            let location = CLLocation(latitude: 37.541, longitude: 126.986)
+            let geocoder = CLGeocoder()
+            let cur = try! await geocoder.reverseGeocodeLocation(location)
+            currentLocation = cur.last!.administrativeArea ?? ""
+            await weatherData.weather(location: location)
+            await weatherData.dailyForecast(location: location)
+            await weatherData.hourlyForecast(location: location)
+            let conditions = WeatherCondition.allCases.map{ $0.description }
+            print(conditions)
         }
         .navigationBarHidden(true)
     }
     
     private var attributedString: AttributedString {
-        var string = AttributedString("19°" + (hasDragged ? " | " : "\n ") + "Mostly Clear")
+        guard let current = weatherData.currentWeather else {
+            return ""
+        }
+        let temperature = "\(Int(current.temperature.value))°"
+        let condition = current.condition.description
         
-        if let temp = string.range(of: "19°") {
+        var string = AttributedString(temperature + (hasDragged ? " | " : "\n ") + condition)
+        
+        if let temp = string.range(of: temperature) {
             string[temp].font = .system(size: (96 - (bottomSheetTranslationProrated * (96 - 20))), weight: hasDragged ? .semibold : .thin)
            // string[temp].foregroundColor = hasDragged ? .secondary : .primary
         }
@@ -97,7 +110,7 @@ struct ContentView: View {
            /// string[pipe].foregroundColor = .secondary.opacity(bottomSheetTranslationProrated)
         }
         
-        if let weather = string.range(of: "Mostly Clear") {
+        if let weather = string.range(of: condition) {
             string[weather].font = .title3.weight(.semibold)
             //string[weather].foregroundColor = .secondary
         }
@@ -109,6 +122,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(WeatherData())
             .preferredColorScheme(.dark)
     }
 }

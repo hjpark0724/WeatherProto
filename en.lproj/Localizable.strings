@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  WeatherProto
+
+  Created by HYEONJUN PARK on 2023/05/11.
+  
+*/
+"Hourly Forecast" = "Hourly Forecast";
+"Daily Forecast" = "Daily Forecast";
