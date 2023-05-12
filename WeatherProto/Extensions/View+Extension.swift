@@ -29,3 +29,23 @@ extension View {
         self.background(Blur(radius: radius, opaque: opaque))
     }
 }
+
+
+struct PolarPointOffset: ViewModifier {
+    let radius: CGFloat
+    let degree: CGFloat
+    
+    func body(content: Content) -> some View {
+        content
+            .offset(
+                x: radius * cos(degree * .pi / 180),
+                y: radius * sin(degree * .pi / 180))
+    }
+}
+
+
+extension View {
+    func offset(radius: CGFloat, degree: CGFloat) -> some View {
+        modifier(PolarPointOffset(radius: radius, degree: degree))
+    }
+}

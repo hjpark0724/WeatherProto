@@ -26,19 +26,26 @@ struct ContentView: View {
         NavigationView {
             GeometryReader { geometry in
                 let screenHeight = geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
-                let imageOffset = screenHeight + 36
+                let imageOffset = screenHeight + 56
                 ZStack {
                     Color.background.ignoresSafeArea()
-                    Image("Background").resizable()
+                    Image("cozy_room")
+                        .resizable()
+                        //.aspectRatio(contentMode: .fill)
                         .ignoresSafeArea()
+                        //상위 에어리어 노출 금지
+                        .offset(y: -bottomSheetTranslationProrated * imageOffset < 0 ? -bottomSheetTranslationProrated * imageOffset : 0)
+
+                    Image("cute_fluffy_puppy")
+                        .resizable()
+                        .aspectRatio( contentMode: .fit)
+                        .frame(width: 200)
+                        .padding(.top, 210)
+                        .padding(.trailing, 20)
                         .offset(y: -bottomSheetTranslationProrated * imageOffset)
-                    
-                    Image("House")
-                        .frame(maxHeight: .infinity, alignment: .top)
-                        .padding(.top, 257)
-                        .offset(y: -bottomSheetTranslationProrated * imageOffset)
-                    
+
                     VStack {
+                        //Text("\(bottomSheetTranslationProrated * 115)")
                         Text(currentLocation)
                             .font(.largeTitle)
                         VStack {
@@ -49,13 +56,13 @@ struct ContentView: View {
                                     .font(.title3.weight(.semibold))
                             }
                         }
-                        
+
                         Spacer()
                     }
                     .foregroundColor(.white)
                     .padding(.top, 51)
                     .offset(y: -bottomSheetTranslationProrated * 46)
-                    
+
                     BottomSheetView(position: $bottomSheetPosition) {
                     } content: {
                         ForcastView(bottomSheetTranslationProrated: bottomSheetTranslationProrated,
@@ -73,10 +80,12 @@ struct ContentView: View {
                             }
                         }
                     }
+
                     TabBar(action: {
                         bottomSheetPosition = .top
                     })
-                        .offset(y: bottomSheetTranslationProrated * 115)
+                    .offset(y: bottomSheetTranslationProrated * 115 < 0 ? 0 :
+                                bottomSheetTranslationProrated * 115)
                 }
             }
         }
@@ -89,8 +98,6 @@ struct ContentView: View {
             await weatherData.weather(location: location)
             await weatherData.dailyForecast(location: location)
             await weatherData.hourlyForecast(location: location)
-            let conditions = WeatherCondition.allCases.map{ $0.description }
-            print(conditions)
         }
         .navigationBarHidden(true)
     }

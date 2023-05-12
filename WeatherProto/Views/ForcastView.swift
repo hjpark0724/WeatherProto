@@ -37,8 +37,14 @@ struct ForcastView: View {
                     .padding(.vertical, 20)
                 }
                 .padding(.horizontal, 20)
-                Image("Forecast Widgets")
-                    .opacity(bottomSheetTranslationProrated)
+                VStack{
+                    HStack (spacing: 16){
+                        Compass()
+                        RainFallCard()
+                    }
+                    //Image("Forecast Widgets")
+                }.opacity(bottomSheetTranslationProrated)
+                
             }
         }
         .backgroundBlur(radius: 25, opaque: true)

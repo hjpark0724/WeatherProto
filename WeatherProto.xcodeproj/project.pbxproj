@@ -31,6 +31,8 @@
 		2E1718912A0CA77E002B7BB6 /* ForecastHourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1718902A0CA77E002B7BB6 /* ForecastHourView.swift */; };
 		2E4A1EB82A0CD4C200DA0497 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2E4A1EBA2A0CD4C200DA0497 /* Localizable.strings */; };
 		2E4A1EBD2A0CD84400DA0497 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2E4A1EBC2A0CD84400DA0497 /* README.md */; };
+		2E4A1EC02A0DB8E200DA0497 /* Compass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4A1EBF2A0DB8E200DA0497 /* Compass.swift */; };
+		2E4A1EC22A0DC9E100DA0497 /* RainFallCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4A1EC12A0DC9E100DA0497 /* RainFallCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,8 @@
 		2E4A1EB92A0CD4C200DA0497 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2E4A1EBB2A0CD4C700DA0497 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2E4A1EBC2A0CD84400DA0497 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		2E4A1EBF2A0DB8E200DA0497 /* Compass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compass.swift; sourceTree = "<group>"; };
+		2E4A1EC12A0DC9E100DA0497 /* RainFallCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainFallCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +192,8 @@
 				2E17187F2A0C5017002B7BB6 /* SegmentControl.swift */,
 				2E1718812A0C617F002B7BB6 /* WeatherCard.swift */,
 				2E1718882A0C6B78002B7BB6 /* TabBar.swift */,
+				2E4A1EBF2A0DB8E200DA0497 /* Compass.swift */,
+				2E4A1EC12A0DC9E100DA0497 /* RainFallCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -367,6 +373,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E4A1EC22A0DC9E100DA0497 /* RainFallCard.swift in Sources */,
 				2E1718442A0BA1EF002B7BB6 /* ContentView.swift in Sources */,
 				2E1718912A0CA77E002B7BB6 /* ForecastHourView.swift in Sources */,
 				2E1718702A0BA453002B7BB6 /* Color+Extension.swift in Sources */,
@@ -374,6 +381,7 @@
 				2E1718762A0C0F14002B7BB6 /* View+Extension.swift in Sources */,
 				2E17188F2A0C8EFC002B7BB6 /* WeatherData.swift in Sources */,
 				2E1718892A0C6B78002B7BB6 /* TabBar.swift in Sources */,
+				2E4A1EC02A0DB8E200DA0497 /* Compass.swift in Sources */,
 				2E17188B2A0C8507002B7BB6 /* WeatherView.swift in Sources */,
 				2E1718742A0C0D6B002B7BB6 /* ForecastCard.swift in Sources */,
 				2E1718782A0C439E002B7BB6 /* ForecastSpecific.swift in Sources */,
